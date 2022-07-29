@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/style.css">
+    <title>Boolzapp</title>
+</head>
+<body>
+
+    <div id="app">
+        <div class="container d-flex">
+            
+            <section class="col-left">
+
+                <header class="top-bar d-flex">
+
+                    <div class="current-user d-flex align-items-center">
+                        <div class="user-picture">
+                            <img src="img/avatar_io.jpg" alt="Current user image">
+                        </div>
+                        <div class="user-name">
+                            Andrea
+                        </div>
+                    </div>
+
+                    <div class="icons-user">
+                        <i class="fa-solid fa-circle-notch"></i>
+                        <i class="fa-solid fa-message"></i>
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </div>
+
+                </header>
+
+                <div class="popup-notification d-flex align-items-center">
+
+                    <div class="icon-popup">
+                        <i class="fa-solid fa-bell-slash"></i>
+                    </div>
+
+                    <div class="text-popup">
+                        <p>Ricevi notifiche di nuovi messaggi</p>
+                        <p class="second-text">Attiva notifiche desktop</p>
+                    </div>
+                </div>
+
+                <div class="users-chat">
+
+                    <div class="search d-flex">
+                        <span class="icon-search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="search" placeholder="Cerca o inizia una nuova chat" v-model="searchContact" @keyup="filterContact()">
+                    </div>
+
+                    <ul class="user-list">
+                        <li class="user d-flex justify-content-between" :class="(activeElement === index) ? 'active' : ''" v-for="(element, index) in contacts" @click="clickToView(index)" v-if="element.visible === true">
+                            <div class="single-user d-flex">
+                                <div class="user-img">
+                                    <img :src="'img/avatar' + element.avatar + '.jpg'" alt="immagine avatar 1">
+                                </div>
+                                <div class="user-text">
+                                    <p>{{element.name}}</p>
+                                    <p class="last-input">Ultimo messaggio inviato</p>
+                                </div>
+                            </div>
+                            <div class="user-time">
+                                12:00
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </section>
+
+            <section class="col-right">
+                <header class="top-bar d-flex">
+                    <div class="current-user-view" :class="(activeElement === index) ? 'd-block' : ''" v-for="(element, index) in contacts" v-if="activeElement === index">
+                        <div class="user-img">
+                            <img :src="'img/avatar' + element.avatar + '.jpg'" alt="'immagine avatar' + element.name">
+                        </div>
+                        <div class="user-text">
+                            <p>{{element.name}}</p>
+                            <p class="last-input">Ultimo accesso oggi alle 12:00</p>
+                        </div>
+                    </div>
+
+                    <div class="current-user-view" v-else>
+                        <div class="user-img">
+                            <img src="" alt="immagine avatar">
+                        </div>
+                        <div class="user-text">
+                            <p>Username</p>
+                            <p class="last-input">Ultimo messaggio inviato</p>
+                        </div>
+                    </div>
+
+                    <div class="icons-user">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <i class="fa-solid fa-paperclip"></i>
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </div>
+                </header>
+                
+                <main class="current-chat">
+                    <div class="all-messages" >
+
+                        <div class="d-flex" :class="(element.status === 'sent') ? 'row-send' : 'row-receive'" v-for="(element, index) in contacts[activeElement].messages">
+                            <div class="message" :class="(element.status === 'sent') ? 'send' : ''">
+                                <p class="overflow-vis">{{element.message}}</p>
+                                <div class="time-message">
+                                    {{element.date}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+
+
+                <footer class="bottom-input d-flex align-items-center">
+                    <i class="fa-regular fa-face-smile"></i>
+                    <input type="text" placeholder="Scrivi un messaggio" v-model="currentMessage" @keydown.enter="sendMessage(activeElement, currentMessage)">
+                    <i class="fa-solid fa-microphone"></i>
+                </footer>
+
+            </section>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
